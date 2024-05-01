@@ -24,12 +24,10 @@ If you are experiencing issues, please make sure you have the latest versions.
 External Requirements:
 - Basic utils: `git`, `make`, `unzip`, C Compiler (`gcc`)
 - [ripgrep](https://github.com/BurntSushi/ripgrep#installation)
-- A [Nerd Font](https://www.nerdfonts.com/): optional, provides various icons
+- [JetBrains Mono Nerd Font](https://www.nerdfonts.com/): provides various icons
   - if you have it set `vim.g.have_nerd_font` in `init.lua` to true
-- Language Setup:
-  - If want to write Typescript, you need `npm`
-  - If want to write Golang, you will need `go`
-  - etc.
+  - update terminal emulator configuration to use this font:
+<img width="1022" alt="Screenshot 2024-05-01 at 11 19 10 AM" src="https://github.com/FestiveAkp/kickstart.nvim/assets/20550003/08f10bd7-8966-4ce6-9e50-b4e1e105d608">
 
 > **NOTE**
 > See [Install Recipes](#Install-Recipes) for additional Windows and Linux specific notes
