@@ -599,6 +599,8 @@ require('lazy').setup({
             },
           },
         },
+
+        phpactor = {},
       }
 
       -- Ensure the servers and tools above are installed
@@ -911,8 +913,15 @@ require('lazy').setup({
   },
   {
     'windwp/nvim-autopairs',
+    dependencies = { 'hrsh7th/nvim-cmp' },
     event = 'InsertEnter',
-    config = true,
+    config = function()
+      require('nvim-autopairs').setup {}
+      -- If you want to automatically add `(` after selecting a function or method
+      local cmp_autopairs = require 'nvim-autopairs.completion.cmp'
+      local cmp = require 'cmp'
+      cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
+    end,
     -- use opts = {} for passing setup options
     -- this is equalent to setup({}) function
   },
@@ -963,12 +972,13 @@ require('lazy').setup({
             hide_hidden = false,
             never_show = {
               '.git',
+              '.DS_Store',
             },
           },
         },
       }
 
-      vim.cmd [[nnoremap \ :Neotree toggle<cr>]]
+      vim.keymap.set('n', '\\', '<Cmd>Neotree toggle<CR>', { desc = 'Toggle filetree' })
     end,
   },
 
