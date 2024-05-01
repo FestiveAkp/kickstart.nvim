@@ -617,6 +617,7 @@ require('lazy').setup({
         'eslint_d',
         'prettierd',
         'jsonlint',
+        'markdownlint',
         'vale',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
@@ -687,6 +688,7 @@ require('lazy').setup({
         typescript = { 'prettierd' },
         typescriptreact = { 'prettierd' },
         json = { 'prettierd' },
+        jsonc = { 'prettierd' },
       },
     },
   },
