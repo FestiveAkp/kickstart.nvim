@@ -32,8 +32,14 @@ External Requirements:
 ```bash
 brew install --cask font-jetbrains-mono-nerd-font
 ```
-- update terminal emulator configuration to use this font:
+Update terminal emulator configuration to use this font:
+
 <img width="1022" alt="Screenshot 2024-05-01 at 11 19 10 AM" src="https://github.com/FestiveAkp/kickstart.nvim/assets/20550003/08f10bd7-8966-4ce6-9e50-b4e1e105d608">
+
+
+Update terminal emulator configuration to support Option keys correctly:
+
+<img width="1040" alt="Screenshot 2024-05-01 at 11 38 55 AM" src="https://github.com/FestiveAkp/kickstart.nvim/assets/20550003/206c66b0-2493-46cc-bec5-0723d6e66cc8">
 
 > **NOTE**
 > See [Install Recipes](#Install-Recipes) for additional Windows and Linux specific notes
