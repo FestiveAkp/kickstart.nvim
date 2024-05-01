@@ -14,6 +14,10 @@ A starting point for Neovim that is:
 
 ### Install Neovim
 
+```bash
+brew install neovim
+```
+
 Kickstart.nvim targets *only* the latest
 ['stable'](https://github.com/neovim/neovim/releases/tag/stable) and latest
 ['nightly'](https://github.com/neovim/neovim/releases/tag/nightly) of Neovim.
