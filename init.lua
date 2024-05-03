@@ -283,11 +283,17 @@ require('lazy').setup({
     'lewis6991/gitsigns.nvim',
     opts = {
       signs = {
-        add = { text = '+' },
-        change = { text = '~' },
+        --   add = { text = '+' },
+        --   change = { text = '~' },
+        --   delete = { text = '_' },
+        --   topdelete = { text = '‾' },
+        --   changedelete = { text = '~' },
+        add = { text = '┃' },
+        change = { text = '┃' },
         delete = { text = '_' },
         topdelete = { text = '‾' },
         changedelete = { text = '~' },
+        untracked = { text = '┆' },
       },
     },
   },
@@ -641,16 +647,18 @@ require('lazy').setup({
   {
     'pmizio/typescript-tools.nvim',
     dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
-    opts = {
-      settings = {
-        -- tsserver_plugins = {
-        --   -- for TypeScript v4.9+
-        --   '@styled/typescript-styled-plugin',
-        --   -- or for older TypeScript versions
-        --   -- "typescript-styled-plugin",
-        -- },
-      },
-    },
+    config = function()
+      require('typescript-tools').setup {
+        settings = {
+          tsserver_plugins = {
+            -- for TypeScript v4.9+
+            '@styled/typescript-styled-plugin',
+            -- or for older TypeScript versions
+            -- "typescript-styled-plugin",
+          },
+        },
+      }
+    end,
   },
   { -- Autoformat
     'stevearc/conform.nvim',
