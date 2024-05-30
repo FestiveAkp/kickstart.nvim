@@ -547,6 +547,10 @@ require('lazy').setup({
           --  For example, in C this would take you to the header.
           map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
 
+          -- vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
+          --   border = 'single',
+          -- })
+
           -- The following two autocommands are used to highlight references of the
           -- word under your cursor when your cursor rests there for a little while.
           --    See `:help CursorHold` for information about when this is executed
@@ -615,7 +619,7 @@ require('lazy').setup({
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`tsserver`) will work just fine
-        -- tsserver = {},
+        tsserver = {},
         -- eslint = {},
 
         lua_ls = {
@@ -671,22 +675,22 @@ require('lazy').setup({
       }
     end,
   },
-  {
-    'pmizio/typescript-tools.nvim',
-    dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
-    config = function()
-      require('typescript-tools').setup {
-        settings = {
-          tsserver_plugins = {
-            -- for TypeScript v4.9+
-            '@styled/typescript-styled-plugin',
-            -- or for older TypeScript versions
-            -- "typescript-styled-plugin",
-          },
-        },
-      }
-    end,
-  },
+  -- {
+  --   'pmizio/typescript-tools.nvim',
+  --   dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
+  --   config = function()
+  --     require('typescript-tools').setup {
+  --       settings = {
+  --         tsserver_plugins = {
+  --           -- for TypeScript v4.9+
+  --           '@styled/typescript-styled-plugin',
+  --           -- or for older TypeScript versions
+  --           -- "typescript-styled-plugin",
+  --         },
+  --       },
+  --     }
+  --   end,
+  -- },
   { -- Autoformat
     'stevearc/conform.nvim',
     lazy = false,
@@ -765,6 +769,7 @@ require('lazy').setup({
       --  into multiple repos for maintenance purposes.
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-path',
+      'hrsh7th/cmp-nvim-lsp-signature-help',
     },
     config = function()
       -- See `:help cmp`
@@ -836,6 +841,7 @@ require('lazy').setup({
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
           { name = 'path' },
+          { name = 'nvim_lsp_signature_help' },
         },
       }
     end,
@@ -1042,7 +1048,7 @@ require('lazy').setup({
   require 'kickstart.plugins.lint',
   -- require 'kickstart.plugins.autopairs',
   -- require 'kickstart.plugins.neo-tree',
-  -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
+  require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
