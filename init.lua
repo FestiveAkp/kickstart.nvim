@@ -203,27 +203,6 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 -- Escape rebinding
 vim.api.nvim_set_keymap('i', 'jk', '<Esc>', {})
 
--- [[ Tab bar maps ]]
-
--- Move to previous/next
-vim.api.nvim_set_keymap('n', '<A-,>', '<Cmd>BufferPrevious<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<A-.>', '<Cmd>BufferNext<CR>', { noremap = true, silent = true })
-
--- Goto buffer in position
-vim.api.nvim_set_keymap('n', '<A-1>', '<Cmd>BufferGoto 1<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<A-2>', '<Cmd>BufferGoto 2<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<A-3>', '<Cmd>BufferGoto 3<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<A-4>', '<Cmd>BufferGoto 4<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<A-5>', '<Cmd>BufferGoto 5<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<A-6>', '<Cmd>BufferGoto 6<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<A-7>', '<Cmd>BufferGoto 7<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<A-8>', '<Cmd>BufferGoto 8<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<A-9>', '<Cmd>BufferGoto 9<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<A-0>', '<Cmd>BufferLast<CR>', { noremap = true, silent = true })
-
--- Close buffer
-vim.api.nvim_set_keymap('n', '<A-c>', '<Cmd>BufferClose<CR>', { noremap = true, silent = true })
-
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -945,6 +924,33 @@ require('lazy').setup({
     },
     init = function()
       vim.g.barbar_auto_setup = false
+
+      local map = function(lhs, rhs, desc)
+        vim.api.nvim_set_keymap('n', lhs, rhs, { noremap = true, silent = true, desc = desc })
+      end
+
+      -- Switch to next/previous buffer
+      map('<A-,>', '<Cmd>BufferPrevious<CR>')
+      map('<A-.>', '<Cmd>BufferNext<CR>')
+
+      -- Move buffer left/right in bar
+      map('<A-<>', '<Cmd>BufferMovePrevious<CR>', '')
+      map('<A->>', '<Cmd>BufferMoveNext<CR>', '')
+
+      -- Close buffer
+      map('<A-c>', '<Cmd>BufferClose<CR>', 'Close current buffer')
+
+      -- Switch to buffer in position
+      map('<leader>1', '<Cmd>BufferGoto 1<CR>', 'Jump to buffer 1')
+      map('<leader>2', '<Cmd>BufferGoto 2<CR>', 'Jump to buffer 2')
+      map('<leader>3', '<Cmd>BufferGoto 3<CR>', 'Jump to buffer 3')
+      map('<leader>4', '<Cmd>BufferGoto 4<CR>', 'Jump to buffer 4')
+      map('<leader>5', '<Cmd>BufferGoto 5<CR>', 'Jump to buffer 5')
+      map('<leader>6', '<Cmd>BufferGoto 6<CR>', 'Jump to buffer 6')
+      map('<leader>7', '<Cmd>BufferGoto 7<CR>', 'Jump to buffer 7')
+      map('<leader>8', '<Cmd>BufferGoto 8<CR>', 'Jump to buffer 8')
+      map('<leader>9', '<Cmd>BufferGoto 9<CR>', 'Jump to buffer 9')
+      map('<leader>0', '<Cmd>BufferLast<CR>', 'Jump to last buffer')
     end,
     opts = {
       -- lazy.nvim will automatically call setup for you. put your options here,
@@ -953,9 +959,15 @@ require('lazy').setup({
       -- animation = true,
       -- insert_at_start = true,
       -- ...etc.
-      auto_hide = 0,
       sidebar_filetypes = {
         ['neo-tree'] = true,
+      },
+      icons = {
+        button = false,
+        -- gitsigns = {
+        --   added = { enabled = true },
+        --   changed = { enabled = true },
+        -- },
       },
     },
     version = '^1.0.0', -- optional: only update when a new 1.x version is released
