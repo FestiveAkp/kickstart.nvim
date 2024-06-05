@@ -307,6 +307,7 @@ require('lazy').setup({
         ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
         ['<leader>t'] = { name = '[T]oggle', _ = 'which_key_ignore' },
         ['<leader>h'] = { name = 'Git [H]unk', _ = 'which_key_ignore' },
+        ['<leader>ho'] = { name = 'Git [H]unk [O]pen', _ = 'which_key_ignore' },
       }
       -- visual mode
       require('which-key').register({
@@ -849,10 +850,30 @@ require('lazy').setup({
     dependencies = { 'nvim-lua/plenary.nvim' },
     opts = { signs = false },
   },
+  { -- Git blame
+    'f-person/git-blame.nvim',
+    config = function()
+      local map = function(lhs, rhs, desc)
+        vim.api.nvim_set_keymap('n', lhs, rhs, { noremap = true, silent = true, desc = desc })
+      end
+
+      map('<leader>hoc', '<Cmd>GitBlameOpenCommitURL<CR>', 'git [o]pen [c]ommit URL under cursor')
+      map('<leader>hof', '<Cmd>GitBlameOpenFileURL<CR>', 'git [o]pen [f]ile URL under cursor')
+
+      require('gitblame').setup {
+        -- enabled = false,
+        display_virtual_text = false,
+        message_template = ' <author>, <date>',
+        date_format = '%r',
+      }
+    end,
+  },
   { -- Statusline
     'nvim-lualine/lualine.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
+      local git_blame = require 'gitblame'
+
       require('lualine').setup {
         extensions = { 'neo-tree' },
         options = {
@@ -884,7 +905,15 @@ require('lazy').setup({
               path = 1, -- Relative path
             },
           },
-          lualine_x = { 'encoding', 'fileformat', 'filetype' },
+          lualine_x = {
+            {
+              git_blame.get_current_blame_text,
+              cond = git_blame.is_blame_text_available,
+            },
+            'encoding',
+            'fileformat',
+            'filetype',
+          },
           lualine_y = { 'progress' },
           lualine_z = { 'location' },
         },
