@@ -857,8 +857,8 @@ require('lazy').setup({
         vim.api.nvim_set_keymap('n', lhs, rhs, { noremap = true, silent = true, desc = desc })
       end
 
-      map('<leader>hoc', '<Cmd>GitBlameOpenCommitURL<CR>', 'git [o]pen [c]ommit URL under cursor')
-      map('<leader>hof', '<Cmd>GitBlameOpenFileURL<CR>', 'git [o]pen [f]ile URL under cursor')
+      map('<leader>hoc', '<Cmd>GitBlameOpenCommitURL<CR>', 'git blame [o]pen [c]ommit URL for line')
+      map('<leader>hof', '<Cmd>GitBlameOpenFileURL<CR>', 'git blame [o]pen [f]ile URL for line')
 
       require('gitblame').setup {
         -- enabled = false,
