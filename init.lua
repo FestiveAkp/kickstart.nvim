@@ -1121,28 +1121,33 @@ require('lazy').setup({
       'MunifTanjim/nui.nvim',
       -- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
     },
-    config = function()
-      require('neo-tree').setup {
-        close_if_last_window = true,
-        filesystem = {
-          filtered_items = {
-            visible = true,
-            hide_dotfiles = false,
-            hide_gitignored = false,
-            hide_hidden = false,
-            never_show = {
-              '.git',
-              '.DS_Store',
-            },
-          },
-          follow_current_file = {
-            enabled = true,
+    cmd = 'Neotree',
+    keys = {
+      { '\\', ':Neotree reveal<CR>', desc = 'Neo-tree reveal', silent = true },
+    },
+    opts = {
+      close_if_last_window = true,
+      filesystem = {
+        window = {
+          mappings = {
+            ['\\'] = 'close_window',
           },
         },
-      }
-
-      vim.keymap.set('n', '\\', '<Cmd>Neotree toggle<CR>', { desc = 'Toggle filetree' })
-    end,
+        filtered_items = {
+          visible = true,
+          hide_dotfiles = false,
+          hide_gitignored = false,
+          hide_hidden = false,
+          never_show = {
+            '.git',
+            '.DS_Store',
+          },
+        },
+        follow_current_file = {
+          enabled = true,
+        },
+      },
+    },
   },
   -- {
   --   'vim-test/vim-test',
