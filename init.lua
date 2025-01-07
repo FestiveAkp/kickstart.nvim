@@ -314,9 +314,11 @@ require('lazy').setup({
         ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
         ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
         ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
-        ['<leader>t'] = { name = '[T]oggle', _ = 'which_key_ignore' },
+        -- ['<leader>t'] = { name = '[T]oggle', _ = 'which_key_ignore' },
         ['<leader>h'] = { name = 'Git [H]unk', _ = 'which_key_ignore' },
         ['<leader>ho'] = { name = 'Git [H]unk [O]pen', _ = 'which_key_ignore' },
+        ['b'] = { name = '[B]uffer', _ = 'which_key_ignore' },
+        ['bm'] = { name = '[B]uffer [M]ove', _ = 'which_key_ignore' },
       }
       -- visual mode
       require('which-key').register({
@@ -998,62 +1000,108 @@ require('lazy').setup({
       --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
     end,
   },
-  { -- Tab bar
-    'romgrk/barbar.nvim',
-    dependencies = {
-      'lewis6991/gitsigns.nvim',
-      'nvim-tree/nvim-web-devicons',
-    },
-    init = function()
-      vim.g.barbar_auto_setup = false
+  {
+    'akinsho/bufferline.nvim',
+    version = '*',
+    dependencies = 'nvim-tree/nvim-web-devicons',
+    config = function()
+      require('bufferline').setup {
+        options = {
+          show_close_icon = false,
+          offsets = {
+            {
+              filetype = 'neo-tree',
+              text = 'File Explorer',
+              separator = true,
+            },
+          },
+        },
+      }
 
       local map = function(lhs, rhs, desc)
         vim.api.nvim_set_keymap('n', lhs, rhs, { noremap = true, silent = true, desc = desc })
       end
 
       -- Switch to next/previous buffer
-      map('<A-,>', '<Cmd>BufferPrevious<CR>')
-      map('<A-.>', '<Cmd>BufferNext<CR>')
+      map('<A-.>', '<Cmd>BufferLineCycleNext<CR>')
+      map('<A-,>', '<Cmd>BufferLineCyclePrev<CR>')
 
       -- Move buffer left/right in bar
-      map('<A-<>', '<Cmd>BufferMovePrevious<CR>', '')
-      map('<A->>', '<Cmd>BufferMoveNext<CR>', '')
+      map('bm]', '<Cmd>BufferLineMoveNext<CR>', 'Move buffer right')
+      map('bm[', '<Cmd>BufferLineMovePrev<CR>', 'Move buffer left')
 
       -- Close buffer
-      map('<A-c>', '<Cmd>BufferClose<CR>', 'Close current buffer')
+      -- map('<A-c>', '<Cmd>bd<CR>')
 
       -- Switch to buffer in position
-      map('<leader>1', '<Cmd>BufferGoto 1<CR>', 'Jump to buffer 1')
-      map('<leader>2', '<Cmd>BufferGoto 2<CR>', 'Jump to buffer 2')
-      map('<leader>3', '<Cmd>BufferGoto 3<CR>', 'Jump to buffer 3')
-      map('<leader>4', '<Cmd>BufferGoto 4<CR>', 'Jump to buffer 4')
-      map('<leader>5', '<Cmd>BufferGoto 5<CR>', 'Jump to buffer 5')
-      map('<leader>6', '<Cmd>BufferGoto 6<CR>', 'Jump to buffer 6')
-      map('<leader>7', '<Cmd>BufferGoto 7<CR>', 'Jump to buffer 7')
-      map('<leader>8', '<Cmd>BufferGoto 8<CR>', 'Jump to buffer 8')
-      map('<leader>9', '<Cmd>BufferGoto 9<CR>', 'Jump to buffer 9')
-      map('<leader>0', '<Cmd>BufferLast<CR>', 'Jump to last buffer')
+      map('b1', '<Cmd>BufferLineGoToBuffer 1<CR>', 'Jump to buffer 1')
+      map('b2', '<Cmd>BufferLineGoToBuffer 2<CR>', 'Jump to buffer 2')
+      map('b3', '<Cmd>BufferLineGoToBuffer 3<CR>', 'Jump to buffer 3')
+      map('b4', '<Cmd>BufferLineGoToBuffer 4<CR>', 'Jump to buffer 4')
+      map('b5', '<Cmd>BufferLineGoToBuffer 5<CR>', 'Jump to buffer 5')
+      map('b6', '<Cmd>BufferLineGoToBuffer 6<CR>', 'Jump to buffer 6')
+      map('b7', '<Cmd>BufferLineGoToBuffer 7<CR>', 'Jump to buffer 7')
+      map('b8', '<Cmd>BufferLineGoToBuffer 8<CR>', 'Jump to buffer 8')
+      map('b9', '<Cmd>BufferLineGoToBuffer 9<CR>', 'Jump to buffer 9')
+      map('b0', '<Cmd>BufferLineGoToBuffer -1<CR>', 'Jump to last buffer')
     end,
-    opts = {
-      -- lazy.nvim will automatically call setup for you. put your options here,
-      -- anything missing will use the default:
-      --
-      -- animation = true,
-      -- insert_at_start = true,
-      -- ...etc.
-      sidebar_filetypes = {
-        ['neo-tree'] = true,
-      },
-      icons = {
-        button = false,
-        -- gitsigns = {
-        --   added = { enabled = true },
-        --   changed = { enabled = true },
-        -- },
-      },
-    },
-    version = '^1.0.0', -- optional: only update when a new 1.x version is released
   },
+  -- { -- Tab bar
+  --   'romgrk/barbar.nvim',
+  --   dependencies = {
+  --     'lewis6991/gitsigns.nvim',
+  --     'nvim-tree/nvim-web-devicons',
+  --   },
+  --   init = function()
+  --     vim.g.barbar_auto_setup = false
+  --
+  --     local map = function(lhs, rhs, desc)
+  --       vim.api.nvim_set_keymap('n', lhs, rhs, { noremap = true, silent = true, desc = desc })
+  --     end
+  --
+  --     -- Switch to next/previous buffer
+  --     map('<A-,>', '<Cmd>BufferPrevious<CR>')
+  --     map('<A-.>', '<Cmd>BufferNext<CR>')
+  --
+  --     -- Move buffer left/right in bar
+  --     map('<A-<>', '<Cmd>BufferMovePrevious<CR>', '')
+  --     map('<A->>', '<Cmd>BufferMoveNext<CR>', '')
+  --
+  --     -- Close buffer
+  --     map('<A-c>', '<Cmd>BufferClose<CR>', 'Close current buffer')
+  --
+  --     -- Switch to buffer in position
+  --     map('<leader>1', '<Cmd>BufferGoto 1<CR>', 'Jump to buffer 1')
+  --     map('<leader>2', '<Cmd>BufferGoto 2<CR>', 'Jump to buffer 2')
+  --     map('<leader>3', '<Cmd>BufferGoto 3<CR>', 'Jump to buffer 3')
+  --     map('<leader>4', '<Cmd>BufferGoto 4<CR>', 'Jump to buffer 4')
+  --     map('<leader>5', '<Cmd>BufferGoto 5<CR>', 'Jump to buffer 5')
+  --     map('<leader>6', '<Cmd>BufferGoto 6<CR>', 'Jump to buffer 6')
+  --     map('<leader>7', '<Cmd>BufferGoto 7<CR>', 'Jump to buffer 7')
+  --     map('<leader>8', '<Cmd>BufferGoto 8<CR>', 'Jump to buffer 8')
+  --     map('<leader>9', '<Cmd>BufferGoto 9<CR>', 'Jump to buffer 9')
+  --     map('<leader>0', '<Cmd>BufferLast<CR>', 'Jump to last buffer')
+  --   end,
+  --   opts = {
+  --     -- lazy.nvim will automatically call setup for you. put your options here,
+  --     -- anything missing will use the default:
+  --     --
+  --     -- animation = true,
+  --     -- insert_at_start = true,
+  --     -- ...etc.
+  --     sidebar_filetypes = {
+  --       ['neo-tree'] = true,
+  --     },
+  --     icons = {
+  --       button = false,
+  --       -- gitsigns = {
+  --       --   added = { enabled = true },
+  --       --   changed = { enabled = true },
+  --       -- },
+  --     },
+  --   },
+  --   version = '^1.9.1', -- optional: only update when a new 1.x version is released
+  -- },
   {
     'windwp/nvim-autopairs',
     dependencies = { 'hrsh7th/nvim-cmp' },
@@ -1068,33 +1116,6 @@ require('lazy').setup({
     -- use opts = {} for passing setup options
     -- this is equalent to setup({}) function
   },
-  -- { -- File explorer
-  --   'nvim-tree/nvim-tree.lua',
-  --   version = '*',
-  --   lazy = false,
-  --   dependencies = {
-  --     'nvim-tree/nvim-web-devicons',
-  --   },
-  --   config = function()
-  --     -- local function my_on_attach(bufnr)
-  --     --   local api = require 'nvim-tree.api'
-  --     --
-  --     --   local function opts(desc)
-  --     --     return { desc = 'nvim-tree: ' .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
-  --     --   end
-  --     --
-  --     --   -- default mappings
-  --     --   api.config.mappings.default_on_attach(bufnr)
-  --     --
-  --     --   -- custom mappings
-  --     --   vim.keymap.set('n', '<C-x>', api.tree.toggle, opts 'Toggle')
-  --     -- end
-  --
-  --     require('nvim-tree').setup {
-  --       -- on_attach = my_on_attach,
-  --     }
-  --   end,
-  -- },
   { -- File explorer
     'nvim-neo-tree/neo-tree.nvim',
     branch = 'v3.x',
@@ -1125,6 +1146,45 @@ require('lazy').setup({
       }
 
       vim.keymap.set('n', '\\', '<Cmd>Neotree toggle<CR>', { desc = 'Toggle filetree' })
+    end,
+  },
+  -- {
+  --   'vim-test/vim-test',
+  --   config = function()
+  --     vim.api.nvim_set_keymap('n', '<leader>t', '<Cmd>TestNearest -strategy=neovim_sticky<CR>', { desc = 'Run Nearest [t]est' })
+  --   end,
+  -- },
+  {
+    'nvim-neotest/neotest',
+    dependencies = {
+      'nvim-neotest/nvim-nio',
+      'nvim-lua/plenary.nvim',
+      'antoinemadec/FixCursorHold.nvim',
+      'nvim-treesitter/nvim-treesitter',
+      'nvim-neotest/neotest-jest',
+    },
+    keys = {
+      {
+        '<leader>tr',
+        function()
+          require('neotest').run.run()
+        end,
+        desc = '[R]un nearest [T]est',
+      },
+    },
+    config = function()
+      require('neotest').setup {
+        adapters = {
+          require 'neotest-jest' {
+            jestCommand = 'yarn test:jest --',
+            jestConfigFile = 'jest.config.js',
+            env = { CI = true },
+            cwd = function()
+              return vim.fn.getcwd()
+            end,
+          },
+        },
+      }
     end,
   },
 
