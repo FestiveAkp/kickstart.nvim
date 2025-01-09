@@ -305,7 +305,7 @@ require('lazy').setup({
     opts = {
       -- delay between pressing a key and opening which-key (milliseconds)
       -- this setting is independent of vim.opt.timeoutlen
-      delay = 0,
+      delay = 300,
       icons = {
         -- set icon mappings to true if you have a Nerd Font
         mappings = vim.g.have_nerd_font,
@@ -1253,6 +1253,18 @@ require('lazy').setup({
         },
       }
     end,
+  },
+  -- Better vim.ui
+  {
+    'stevearc/dressing.nvim',
+    opts = {
+      input = {
+        title_pos = 'center',
+        win_options = {
+          winhighlight = 'FloatBorder:TelescopePromptBorder,FloatTitle:TelescopePromptTitle',
+        },
+      },
+    },
   },
 
   -- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
