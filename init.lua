@@ -924,6 +924,7 @@ require('lazy').setup({
       vim.cmd.hi 'Comment gui=none'
     end,
   },
+  -- { 'EdenEast/nightfox.nvim', priority = 1000 },
   { -- Highlight todo, notes, etc in comments
     'folke/todo-comments.nvim',
     event = 'VimEnter',
@@ -1070,6 +1071,7 @@ require('lazy').setup({
       require('bufferline').setup {
         options = {
           show_close_icon = false,
+          show_buffer_close_icons = false,
           offsets = {
             {
               filetype = 'neo-tree',
