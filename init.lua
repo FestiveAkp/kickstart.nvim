@@ -1038,6 +1038,29 @@ require('lazy').setup({
       --  Check out: https://github.com/echasnovski/mini.nvim
     end,
   },
+  {
+    'goolord/alpha-nvim',
+    config = function()
+      local alpha = require 'alpha'
+      local dashboard = require 'alpha.themes.dashboard'
+
+      dashboard.section.buttons.val = {
+        dashboard.button('e', '  > New file', ':ene <BAR> startinsert <CR>'),
+        dashboard.button('f', '󰈞  > Search files', ':Telescope find_files<CR>'),
+        dashboard.button('.', '  > Search recent files', ':Telescope oldfiles<CR>'),
+        dashboard.button('l', '󰒲  > Lazy', ':Lazy<CR>'),
+        dashboard.button('m', '󱌣  > Mason', ':Mason<CR>'),
+        -- dashboard.button('s', '  > Settings', ':e $MYVIMRC | :cd %:p:h | split . | wincmd k | pwd<CR>'),
+        dashboard.button('q', '󰅚  > Quit NVIM', ':qa<CR>'),
+      }
+
+      alpha.setup(dashboard.opts)
+
+      vim.cmd [[
+        autocmd FileType alpha setlocal nofoldenable
+      ]]
+    end,
+  },
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
