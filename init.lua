@@ -1038,24 +1038,58 @@ require('lazy').setup({
       --  Check out: https://github.com/echasnovski/mini.nvim
     end,
   },
+  -- Start screen
   {
     'goolord/alpha-nvim',
     config = function()
       local alpha = require 'alpha'
       local dashboard = require 'alpha.themes.dashboard'
 
+      local logo = [[
+███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗
+████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║
+██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║
+██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║
+██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║
+╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝
+    ]]
+
+      dashboard.section.header.val = vim.split(logo, '\n')
+
       dashboard.section.buttons.val = {
         dashboard.button('e', '  > New file', ':ene <BAR> startinsert <CR>'),
         dashboard.button('f', '󰈞  > Search files', ':Telescope find_files<CR>'),
         dashboard.button('.', '  > Search recent files', ':Telescope oldfiles<CR>'),
+        dashboard.button('r', '  > Restore Session', '<Cmd>lua require("persistence").load()<CR>'),
         dashboard.button('l', '󰒲  > Lazy', ':Lazy<CR>'),
         dashboard.button('m', '󱌣  > Mason', ':Mason<CR>'),
         -- dashboard.button('s', '  > Settings', ':e $MYVIMRC | :cd %:p:h | split . | wincmd k | pwd<CR>'),
         dashboard.button('q', '󰅚  > Quit NVIM', ':qa<CR>'),
       }
 
+      -- Close lazy and re-open when the dashboard is ready
+      if vim.o.filetype == 'lazy' then
+        vim.cmd.close()
+        vim.api.nvim_create_autocmd('User', {
+          pattern = 'AlphaReady',
+          callback = function()
+            require('lazy').show()
+          end,
+        })
+      end
+
       alpha.setup(dashboard.opts)
 
+      -- Show plugin load time in footer
+      vim.api.nvim_create_autocmd('User', {
+        pattern = 'LazyVimStarted',
+        callback = function()
+          local stats = require('lazy').stats()
+          local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
+          dashboard.section.footer.val = '󱐋 ' .. stats.count .. ' plugins loaded in ' .. ms .. 'ms'
+          pcall(vim.cmd.AlphaRedraw)
+        end,
+      })
       vim.cmd [[
         autocmd FileType alpha setlocal nofoldenable
       ]]
@@ -1289,6 +1323,13 @@ require('lazy').setup({
           winhighlight = 'FloatBorder:TelescopePromptBorder,FloatTitle:TelescopePromptTitle',
         },
       },
+    },
+  },
+  {
+    'folke/persistence.nvim',
+    event = 'BufReadPre', -- this will only start session saving when an actual file was opened
+    opts = {
+      -- add any custom options here
     },
   },
 
