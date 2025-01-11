@@ -960,27 +960,24 @@ require('lazy').setup({
         options = {
           icons_enabled = true,
           theme = 'auto',
-          -- component_separators = { left = '', right = '' },
-          component_separators = '',
-          section_separators = { left = '', right = '' },
+          component_separators = { left = '|', right = '|' },
+          section_separators = { left = '', right = '' },
           disabled_filetypes = {
-            statusline = {},
+            statusline = {
+              'alpha',
+              'neo-tree',
+            },
             winbar = {},
           },
           ignore_focus = {},
           always_divide_middle = true,
           globalstatus = false,
-          refresh = {
-            statusline = 1000,
-            tabline = 1000,
-            winbar = 1000,
-          },
         },
         sections = {
           lualine_a = { 'mode' },
-          lualine_b = { 'branch', 'diagnostics' },
+          lualine_b = { 'branch' },
           lualine_c = {
-            'diff',
+            'diagnostics',
             {
               'filename',
               path = 1, -- Relative path
@@ -991,8 +988,6 @@ require('lazy').setup({
               git_blame.get_current_blame_text,
               cond = git_blame.is_blame_text_available,
             },
-            'encoding',
-            'fileformat',
             'filetype',
           },
           lualine_y = { 'progress' },
@@ -1057,14 +1052,14 @@ require('lazy').setup({
       dashboard.section.header.val = vim.split(logo, '\n')
 
       dashboard.section.buttons.val = {
-        dashboard.button('e', '  > New file', ':ene <BAR> startinsert <CR>'),
-        dashboard.button('f', '󰈞  > Search files', ':Telescope find_files<CR>'),
-        dashboard.button('.', '  > Search recent files', ':Telescope oldfiles<CR>'),
-        dashboard.button('r', '  > Restore Session', '<Cmd>lua require("persistence").load()<CR>'),
-        dashboard.button('l', '󰒲  > Lazy', ':Lazy<CR>'),
-        dashboard.button('m', '󱌣  > Mason', ':Mason<CR>'),
-        -- dashboard.button('s', '  > Settings', ':e $MYVIMRC | :cd %:p:h | split . | wincmd k | pwd<CR>'),
-        dashboard.button('q', '󰅚  > Quit NVIM', ':qa<CR>'),
+        dashboard.button('e', '  New file', ':ene <BAR> startinsert <CR>'),
+        dashboard.button('f', '󰈞  Search files', ':Telescope find_files<CR>'),
+        dashboard.button('.', '  Search recent files', ':Telescope oldfiles<CR>'),
+        dashboard.button('r', '  Restore Session', '<Cmd>lua require("persistence").load()<CR>'),
+        dashboard.button('l', '󰒲  Lazy', ':Lazy<CR>'),
+        dashboard.button('m', '󱌣  Mason', ':Mason<CR>'),
+        -- dashboard.button('s', '  Settings', ':e $MYVIMRC | :cd %:p:h | split . | wincmd k | pwd<CR>'),
+        dashboard.button('q', '󰅚  Quit NVIM', ':qa<CR>'),
       }
 
       -- Close lazy and re-open when the dashboard is ready
