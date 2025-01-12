@@ -353,8 +353,8 @@ require('lazy').setup({
         -- { '<leader>t', group = '[T]oggle' },
         { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
         { '<leader>ho', group = 'Git [H]unk [O]pen' },
-        { 'b', group = '[B]uffer' },
-        { 'bm', group = '[B]uffer [Move]' },
+        -- { 'b', group = '[B]uffer' },
+        -- { 'bm', group = '[B]uffer [Move]' },
       },
     },
   },
@@ -498,7 +498,16 @@ require('lazy').setup({
 
       -- Useful status updates for LSP.
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { 'j-hui/fidget.nvim', opts = {} },
+      {
+        'j-hui/fidget.nvim',
+        opts = {
+          notification = {
+            window = {
+              winblend = 0,
+            },
+          },
+        },
+      },
 
       -- Allows extra capabilities provided by nvim-cmp
       'hrsh7th/cmp-nvim-lsp',
@@ -907,24 +916,39 @@ require('lazy').setup({
     end,
   },
 
-  { -- You can easily change to a different colorscheme.
-    -- Change the name of the colorscheme plugin below, and then
-    -- change the command in the config to whatever the name of that colorscheme is.
-    --
-    -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-    'folke/tokyonight.nvim',
-    priority = 1000, -- Make sure to load this before all the other start plugins.
+  -- { -- You can easily change to a different colorscheme.
+  --   -- Change the name of the colorscheme plugin below, and then
+  --   -- change the command in the config to whatever the name of that colorscheme is.
+  --   --
+  --   -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
+  --   'folke/tokyonight.nvim',
+  --   priority = 1000, -- Make sure to load this before all the other start plugins.
+  --   init = function()
+  --     -- Load the colorscheme here.
+  --     -- Like many other themes, this one has different styles, and you could load
+  --     -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
+  --     -- vim.cmd.colorscheme 'tokyonight-night'
+  --
+  --     -- You can configure highlights by doing something like:
+  --     -- vim.cmd.hi 'Comment gui=none'
+  --   end,
+  -- },
+  {
+    'catppuccin/nvim',
+    name = 'catppuccin',
+    priority = 1000,
+    opts = {
+      integrations = {
+        fidget = true,
+        mason = true,
+      },
+    },
     init = function()
-      -- Load the colorscheme here.
-      -- Like many other themes, this one has different styles, and you could load
-      -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'tokyonight-night'
-
-      -- You can configure highlights by doing something like:
+      vim.cmd.colorscheme 'catppuccin'
+      vim.g.catppuccin_flavour = 'mocha'
       vim.cmd.hi 'Comment gui=none'
     end,
   },
-  -- { 'EdenEast/nightfox.nvim', priority = 1000 },
   { -- Highlight todo, notes, etc in comments
     'folke/todo-comments.nvim',
     event = 'VimEnter',
@@ -956,12 +980,14 @@ require('lazy').setup({
       local git_blame = require 'gitblame'
 
       require('lualine').setup {
+        theme = 'catppuccin',
         extensions = { 'neo-tree' },
         options = {
           icons_enabled = true,
           theme = 'auto',
           component_separators = { left = '|', right = '|' },
           section_separators = { left = '', right = '' },
+          -- section_separators = { left = '', right = '' },
           disabled_filetypes = {
             statusline = {
               'alpha',
@@ -975,7 +1001,9 @@ require('lazy').setup({
         },
         sections = {
           lualine_a = { 'mode' },
-          lualine_b = { 'branch' },
+          lualine_b = {
+            'branch',
+          },
           lualine_c = {
             'diagnostics',
             {
@@ -988,10 +1016,9 @@ require('lazy').setup({
               git_blame.get_current_blame_text,
               cond = git_blame.is_blame_text_available,
             },
-            'filetype',
           },
-          lualine_y = { 'progress' },
-          lualine_z = { 'location' },
+          lualine_y = { 'filetype' },
+          lualine_z = { 'progress', 'location' },
         },
       }
     end,
@@ -1041,13 +1068,14 @@ require('lazy').setup({
       local dashboard = require 'alpha.themes.dashboard'
 
       local logo = [[
-███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗
-████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║
-██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║
-██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║
-██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║
-╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝
-    ]]
+ ▄▄    ▄ ▄▄▄▄▄▄▄ ▄▄▄▄▄▄▄ ▄▄   ▄▄ ▄▄▄ ▄▄   ▄▄
+█  █  █ █       █       █  █ █  █   █  █▄█  █
+█   █▄█ █    ▄▄▄█   ▄   █  █▄█  █   █       █
+█       █   █▄▄▄█  █ █  █       █   █       █
+█  ▄    █    ▄▄▄█  █▄█  █       █   █       █
+█ █ █   █   █▄▄▄█       ██     ██   █ ██▄██ █
+█▄█  █▄▄█▄▄▄▄▄▄▄█▄▄▄▄▄▄▄█ █▄▄▄█ █▄▄▄█▄█   █▄█
+            ]]
 
       dashboard.section.header.val = vim.split(logo, '\n')
 
@@ -1060,6 +1088,25 @@ require('lazy').setup({
         dashboard.button('m', '󱌣  Mason', ':Mason<CR>'),
         -- dashboard.button('s', '  Settings', ':e $MYVIMRC | :cd %:p:h | split . | wincmd k | pwd<CR>'),
         dashboard.button('q', '󰅚  Quit NVIM', ':qa<CR>'),
+      }
+
+      local version = {
+        type = 'text',
+        val = 'NVIM ' .. tostring(vim.version()) .. ', ' .. _VERSION,
+        opts = {
+          position = 'center',
+        },
+      }
+
+      dashboard.opts.layout = {
+        { type = 'padding', val = 2 },
+        dashboard.section.header,
+        { type = 'padding', val = 1 },
+        version,
+        { type = 'padding', val = 2 },
+        dashboard.section.buttons,
+        { type = 'padding', val = 1 },
+        dashboard.section.footer,
       }
 
       -- Close lazy and re-open when the dashboard is ready
@@ -1119,6 +1166,7 @@ require('lazy').setup({
     'akinsho/bufferline.nvim',
     version = '*',
     dependencies = 'nvim-tree/nvim-web-devicons',
+    after = 'catppuccin',
     config = function()
       require('bufferline').setup {
         options = {
@@ -1131,6 +1179,7 @@ require('lazy').setup({
               separator = true,
             },
           },
+          highlights = require('catppuccin.groups.integrations.bufferline').get(),
         },
       }
 
@@ -1143,8 +1192,8 @@ require('lazy').setup({
       map('<A-,>', '<Cmd>BufferLineCyclePrev<CR>')
 
       -- Move buffer left/right in bar
-      map('bm]', '<Cmd>BufferLineMoveNext<CR>', 'Move buffer right')
-      map('bm[', '<Cmd>BufferLineMovePrev<CR>', 'Move buffer left')
+      -- map('bm]', '<Cmd>BufferLineMoveNext<CR>', 'Move buffer right')
+      -- map('bm[', '<Cmd>BufferLineMovePrev<CR>', 'Move buffer left')
 
       -- Close buffer
       -- map('<A-c>', '<Cmd>bd<CR>')
