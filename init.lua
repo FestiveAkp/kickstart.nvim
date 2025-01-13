@@ -250,16 +250,20 @@ require('lazy').setup({
   --    require('Comment').setup({})
 
   -- "gc" to comment visual regions/lines
-  -- { 'JoosepAlviste/nvim-ts-context-commentstring' },
-  -- {
-  --   'numToStr/Comment.nvim',
-  --   config = function()
-  --     ---@diagnostic disable-next-line: missing-fields
-  --     require('Comment').setup {
-  --       pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(),
-  --     }
-  --   end,
-  -- },
+  { 'JoosepAlviste/nvim-ts-context-commentstring' },
+  {
+    'numToStr/Comment.nvim',
+    dependencies = {
+      'JoosepAlviste/nvim-ts-context-commentstring',
+    },
+    config = function()
+      -- to skip backwards compatibility routines and speed up loading
+      vim.g.skip_ts_context_commentstring_module = true
+      require('Comment').setup {
+        pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(),
+      }
+    end,
+  },
 
   -- Here is a more advanced example where we pass configuration
   -- options to `gitsigns.nvim`. This is equivalent to the following Lua:
@@ -691,6 +695,8 @@ require('lazy').setup({
             },
           },
         },
+        tailwindcss = {},
+        emmet_language_server = {},
 
         -- phpactor = {},
       }
@@ -749,6 +755,21 @@ require('lazy').setup({
   --     }
   --   end,
   -- },
+  {
+    'luckasRanarison/tailwind-tools.nvim',
+    name = 'tailwind-tools',
+    build = ':UpdateRemotePlugins',
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',
+      'nvim-telescope/telescope.nvim',
+      'neovim/nvim-lspconfig',
+    },
+    opts = {
+      -- document_color = {
+      --   inline_symbol = '󰝤 ', -- only used in inline mode
+      -- },
+    },
+  },
   { -- Autoformat
     'stevearc/conform.nvim',
     event = { 'BufWritePre' },
@@ -834,6 +855,8 @@ require('lazy').setup({
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-path',
       'hrsh7th/cmp-nvim-lsp-signature-help',
+      'tailwind-tools',
+      'onsails/lspkind-nvim',
     },
     config = function()
       -- See `:help cmp`
@@ -911,6 +934,14 @@ require('lazy').setup({
           { name = 'luasnip' },
           { name = 'path' },
           { name = 'nvim_lsp_signature_help' },
+        },
+        formatting = {
+          format = require('lspkind').cmp_format {
+            before = require('tailwind-tools.cmp').lspkind_format,
+            symbol_map = {
+              Color = '󰝤',
+            },
+          },
         },
       }
     end,
@@ -1163,6 +1194,11 @@ require('lazy').setup({
   --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
   --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
   {
+    'windwp/nvim-ts-autotag',
+    dependencies = { 'nvim-treesitter/nvim-treesitter' },
+    opts = {},
+  },
+  {
     'akinsho/bufferline.nvim',
     version = '*',
     dependencies = 'nvim-tree/nvim-web-devicons',
@@ -1199,16 +1235,16 @@ require('lazy').setup({
       -- map('<A-c>', '<Cmd>bd<CR>')
 
       -- Switch to buffer in position
-      map('b1', '<Cmd>BufferLineGoToBuffer 1<CR>', 'Jump to buffer 1')
-      map('b2', '<Cmd>BufferLineGoToBuffer 2<CR>', 'Jump to buffer 2')
-      map('b3', '<Cmd>BufferLineGoToBuffer 3<CR>', 'Jump to buffer 3')
-      map('b4', '<Cmd>BufferLineGoToBuffer 4<CR>', 'Jump to buffer 4')
-      map('b5', '<Cmd>BufferLineGoToBuffer 5<CR>', 'Jump to buffer 5')
-      map('b6', '<Cmd>BufferLineGoToBuffer 6<CR>', 'Jump to buffer 6')
-      map('b7', '<Cmd>BufferLineGoToBuffer 7<CR>', 'Jump to buffer 7')
-      map('b8', '<Cmd>BufferLineGoToBuffer 8<CR>', 'Jump to buffer 8')
-      map('b9', '<Cmd>BufferLineGoToBuffer 9<CR>', 'Jump to buffer 9')
-      map('b0', '<Cmd>BufferLineGoToBuffer -1<CR>', 'Jump to last buffer')
+      -- map('b1', '<Cmd>BufferLineGoToBuffer 1<CR>', 'Jump to buffer 1')
+      -- map('b2', '<Cmd>BufferLineGoToBuffer 2<CR>', 'Jump to buffer 2')
+      -- map('b3', '<Cmd>BufferLineGoToBuffer 3<CR>', 'Jump to buffer 3')
+      -- map('b4', '<Cmd>BufferLineGoToBuffer 4<CR>', 'Jump to buffer 4')
+      -- map('b5', '<Cmd>BufferLineGoToBuffer 5<CR>', 'Jump to buffer 5')
+      -- map('b6', '<Cmd>BufferLineGoToBuffer 6<CR>', 'Jump to buffer 6')
+      -- map('b7', '<Cmd>BufferLineGoToBuffer 7<CR>', 'Jump to buffer 7')
+      -- map('b8', '<Cmd>BufferLineGoToBuffer 8<CR>', 'Jump to buffer 8')
+      -- map('b9', '<Cmd>BufferLineGoToBuffer 9<CR>', 'Jump to buffer 9')
+      -- map('b0', '<Cmd>BufferLineGoToBuffer -1<CR>', 'Jump to last buffer')
     end,
   },
   -- { -- Tab bar
