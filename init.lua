@@ -1228,8 +1228,8 @@ require('lazy').setup({
       map('<A-,>', '<Cmd>BufferLineCyclePrev<CR>')
 
       -- Move buffer left/right in bar
-      -- map('bm]', '<Cmd>BufferLineMoveNext<CR>', 'Move buffer right')
-      -- map('bm[', '<Cmd>BufferLineMovePrev<CR>', 'Move buffer left')
+      map('<leader>b]', '<Cmd>BufferLineMoveNext<CR>', 'Move buffer right')
+      map('<leader>b[', '<Cmd>BufferLineMovePrev<CR>', 'Move buffer left')
 
       -- Close buffer
       -- map('<A-c>', '<Cmd>bd<CR>')
