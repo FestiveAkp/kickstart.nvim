@@ -1334,6 +1334,7 @@ require('lazy').setup({
       close_if_last_window = true,
       filesystem = {
         window = {
+          position = 'float',
           mappings = {
             ['\\'] = 'close_window',
           },
