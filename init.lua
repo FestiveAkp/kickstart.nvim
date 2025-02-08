@@ -815,6 +815,7 @@ require('lazy').setup({
         typescriptreact = { 'prettierd' },
         json = { 'prettierd' },
         jsonc = { 'prettierd' },
+        php = { 'pint' },
       },
     },
   },
