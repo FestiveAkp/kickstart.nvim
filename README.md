@@ -34,6 +34,7 @@ External Requirements:
 ```bash
 brew install --cask font-jetbrains-mono-nerd-font
 ```
+- Emoji fonts (Ubuntu only, and only if you want emoji!) `sudo apt install fonts-noto-color-emoji`
 
 Update terminal emulator configuration to use this font:
 
@@ -43,13 +44,13 @@ Update terminal emulator configuration to support Option keys correctly:
 
 <img width="1040" alt="Screenshot 2024-05-01 at 11 38 55 AM" src="https://github.com/FestiveAkp/kickstart.nvim/assets/20550003/206c66b0-2493-46cc-bec5-0723d6e66cc8">
 
-> **NOTE**
+> [!NOTE]
 > See [Install Recipes](#Install-Recipes) for additional Windows and Linux specific notes
 > and quick install snippets
 
 ### Install Kickstart
 
-> **NOTE**
+> [!NOTE]
 > [Backup](#FAQ) your previous configuration (if any exists)
 
 Neovim's configurations are located under the following paths, depending on your OS:
@@ -66,7 +67,7 @@ Neovim's configurations are located under the following paths, depending on your
 so that you have your own copy that you can modify, then install by cloning the
 fork to your machine using one of the commands below, depending on your OS.
 
-> **NOTE**
+> [!NOTE]
 > Your fork's url will be something like this:
 > `https://github.com/<your_github_username>/kickstart.nvim.git`
 
@@ -207,14 +208,14 @@ sudo apt update
 sudo apt install make gcc ripgrep unzip git xclip curl
 
 # Now we install nvim
-curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
-sudo rm -rf /opt/nvim-linux64
-sudo mkdir -p /opt/nvim-linux64
-sudo chmod a+rX /opt/nvim-linux64
-sudo tar -C /opt -xzf nvim-linux64.tar.gz
+curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
+sudo rm -rf /opt/nvim-linux-x86_64
+sudo mkdir -p /opt/nvim-linux-x86_64
+sudo chmod a+rX /opt/nvim-linux-x86_64
+sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
 
 # make it available in /usr/local/bin, distro installs to /usr/bin
-sudo ln -sf /opt/nvim-linux64/bin/nvim /usr/local/bin/
+sudo ln -sf /opt/nvim-linux-x86_64/bin/nvim /usr/local/bin/
 ```
 </details>
 <details><summary>Fedora Install Steps</summary>
