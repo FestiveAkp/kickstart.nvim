@@ -747,6 +747,18 @@ require('lazy').setup({
         emmet_language_server = {},
 
         -- phpactor = {},
+        intelephense = {
+          settings = {
+            intelephense = {
+              stubs = {
+                'auth',
+                'facades',
+                'helpers',
+                'core',
+              },
+            },
+          },
+        },
       }
 
       -- Ensure the servers and tools above are installed
