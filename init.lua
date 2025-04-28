@@ -676,7 +676,7 @@ require('lazy').setup({
       vim.diagnostic.config {
         severity_sort = true,
         float = { border = 'rounded', source = 'if_many' },
-        underline = { severity = vim.diagnostic.severity.ERROR },
+        -- underline = { severity = vim.diagnostic.severity.ERROR },
         signs = vim.g.have_nerd_font and {
           text = {
             [vim.diagnostic.severity.ERROR] = '󰅚 ',
@@ -687,6 +687,7 @@ require('lazy').setup({
         } or {},
         virtual_text = {
           source = 'if_many',
+          severity = { vim.diagnostic.severity.ERROR, vim.diagnostic.severity.WARN },
           spacing = 2,
           format = function(diagnostic)
             local diagnostic_message = {
@@ -1021,7 +1022,7 @@ require('lazy').setup({
   --     -- Load the colorscheme here.
   --     -- Like many other themes, this one has different styles, and you could load
   --     -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-  --     -- vim.cmd.colorscheme 'tokyonight-night'
+  --     vim.cmd.colorscheme 'tokyonight-night'
   --
   --     -- You can configure highlights by doing something like:
   --     -- vim.cmd.hi 'Comment gui=none'
@@ -1037,6 +1038,24 @@ require('lazy').setup({
         integrations = {
           fidget = true,
           mason = true,
+          native_lsp = {
+            enabled = true,
+            underlines = {
+              errors = { 'underline' },
+              hints = { 'underline' },
+              warnings = { 'underline' },
+              information = { 'underline' },
+            },
+            inlay_hints = {
+              background = true,
+            },
+            virtual_texts = {
+              errors = { 'italic' },
+              hints = { 'italic' },
+              warnings = { 'italic' },
+              information = { 'italic' },
+            },
+          },
         },
       }
 
