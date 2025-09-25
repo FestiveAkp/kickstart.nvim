@@ -1332,8 +1332,8 @@ require('lazy').setup({
       end
 
       -- Switch to next/previous buffer
-      map('<A-.>', '<Cmd>BufferLineCycleNext<CR>')
-      map('<A-,>', '<Cmd>BufferLineCyclePrev<CR>')
+      map('<C-l>', '<Cmd>BufferLineCycleNext<CR>')
+      map('<C-h>', '<Cmd>BufferLineCyclePrev<CR>')
 
       -- Move buffer left/right in bar
       map('<leader>b]', '<Cmd>BufferLineMoveNext<CR>', 'Move buffer right')
