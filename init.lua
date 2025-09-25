@@ -215,6 +215,30 @@ vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' }
 -- Escape rebinding
 vim.api.nvim_set_keymap('i', 'jk', '<Esc>', {})
 
+-- Console log current word
+local function console_log_word()
+  -- 1. Get the current line number
+  local lnum = vim.fn.line '.'
+
+  -- Get the current line's content to find its indentation
+  local current_line = vim.api.nvim_get_current_line()
+  local indentation = string.match(current_line, '^%s*') or ''
+
+  -- Get the word under the cursor
+  local word = vim.fn.expand '<cword>'
+
+  -- 2. Build the log statement using string.format
+  local log_statement = string.format("%sconsole.log('%s: ', %s);", indentation, word, word)
+
+  -- 3. Append the new line below the current one without moving the cursor
+  vim.fn.append(lnum, log_statement)
+
+  -- 4. Explicitly move the cursor to the end of the newly created line
+  vim.api.nvim_win_set_cursor(0, { lnum + 1, #log_statement })
+end
+
+vim.keymap.set('n', '<leader>lw', console_log_word, { desc = '[L]og Current [W]ord' })
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -373,6 +397,7 @@ require('lazy').setup({
 
       -- Document existing key chains
       spec = {
+        { '<leader>l', group = '[L]og' },
         { '<leader>s', group = '[S]earch' },
         -- { '<leader>t', group = '[T]oggle' },
         { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
@@ -878,7 +903,8 @@ require('lazy').setup({
         typescriptreact = { 'prettierd' },
         json = { 'prettierd' },
         jsonc = { 'prettierd' },
-        php = { 'pint' },
+        php = {},
+        -- php = { 'pint' },
       },
     },
   },
@@ -1453,15 +1479,6 @@ require('lazy').setup({
       'nvim-treesitter/nvim-treesitter',
       'nvim-neotest/neotest-jest',
     },
-    keys = {
-      {
-        '<leader>tr',
-        function()
-          require('neotest').run.run()
-        end,
-        desc = '[R]un nearest [T]est',
-      },
-    },
     config = function()
       require('neotest').setup {
         adapters = {
@@ -1475,6 +1492,13 @@ require('lazy').setup({
           },
         },
       }
+
+      local map = function(lhs, rhs, desc)
+        vim.api.nvim_set_keymap('n', lhs, rhs, { noremap = true, silent = true, desc = desc })
+      end
+
+      map('<leader>tr', "<Cmd>lua require('neotest').run.run()<CR>", '[R]un nearest [T]est')
+      map('<leader>tT', "<Cmd>lua require('neotest').run.run(vim.fn.expand('%'))<CR>", '[R]un all tests in buffer')
     end,
   },
   -- Better vim.ui
