@@ -774,18 +774,7 @@ require('lazy').setup({
         emmet_language_server = {},
 
         -- phpactor = {},
-        intelephense = {
-          settings = {
-            intelephense = {
-              stubs = {
-                'auth',
-                'facades',
-                'helpers',
-                'core',
-              },
-            },
-          },
-        },
+        intelephense = {},
       }
 
       -- Ensure the servers and tools above are installed
@@ -1154,9 +1143,14 @@ require('lazy').setup({
               git_blame.get_current_blame_text,
               cond = git_blame.is_blame_text_available,
             },
+            'filetype',
+            'progress',
+            'location',
           },
-          lualine_y = { 'filetype' },
-          lualine_z = { 'progress', 'location' },
+          lualine_y = {},
+          lualine_z = {},
+          -- lualine_y = { 'filetype' },
+          -- lualine_z = { 'progress', 'location' },
         },
       }
     end,
@@ -1205,17 +1199,17 @@ require('lazy').setup({
       local alpha = require 'alpha'
       local dashboard = require 'alpha.themes.dashboard'
 
-      local logo = [[
- ▄▄    ▄ ▄▄▄▄▄▄▄ ▄▄▄▄▄▄▄ ▄▄   ▄▄ ▄▄▄ ▄▄   ▄▄
-█  █  █ █       █       █  █ █  █   █  █▄█  █
-█   █▄█ █    ▄▄▄█   ▄   █  █▄█  █   █       █
-█       █   █▄▄▄█  █ █  █       █   █       █
-█  ▄    █    ▄▄▄█  █▄█  █       █   █       █
-█ █ █   █   █▄▄▄█       ██     ██   █ ██▄██ █
-█▄█  █▄▄█▄▄▄▄▄▄▄█▄▄▄▄▄▄▄█ █▄▄▄█ █▄▄▄█▄█   █▄█
-            ]]
+      --       local logo = [[
+      --  ▄▄    ▄ ▄▄▄▄▄▄▄ ▄▄▄▄▄▄▄ ▄▄   ▄▄ ▄▄▄ ▄▄   ▄▄
+      -- █  █  █ █       █       █  █ █  █   █  █▄█  █
+      -- █   █▄█ █    ▄▄▄█   ▄   █  █▄█  █   █       █
+      -- █       █   █▄▄▄█  █ █  █       █   █       █
+      -- █  ▄    █    ▄▄▄█  █▄█  █       █   █       █
+      -- █ █ █   █   █▄▄▄█       ██     ██   █ ██▄██ █
+      -- █▄█  █▄▄█▄▄▄▄▄▄▄█▄▄▄▄▄▄▄█ █▄▄▄█ █▄▄▄█▄█   █▄█
+      --             ]]
 
-      dashboard.section.header.val = vim.split(logo, '\n')
+      -- dashboard.section.header.val = vim.split(logo, '\n')
 
       dashboard.section.buttons.val = {
         dashboard.button('e', '  New file', ':ene <BAR> startinsert <CR>'),
