@@ -129,7 +129,9 @@ do
   --  Schedule the setting after `UiEnter` because it can increase startup-time.
   --  Remove this option if you want your OS clipboard to remain independent.
   --  See `:help 'clipboard'`
-  vim.schedule(function() vim.o.clipboard = 'unnamedplus' end)
+  vim.schedule(function()
+    vim.o.clipboard = 'unnamedplus'
+  end)
 
   -- Enable break indent
   vim.o.breakindent = true
@@ -301,7 +303,9 @@ do
   vim.api.nvim_create_autocmd('TextYankPost', {
     desc = 'Highlight when yanking (copying) text',
     group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
-    callback = function() vim.hl.on_yank() end,
+    callback = function()
+      vim.hl.on_yank()
+    end,
   })
 end
 
@@ -309,7 +313,6 @@ end
 -- SECTION 3: PLUGIN MANAGER INTRO
 -- vim.pack intro, build hooks
 -- ============================================================
-local pack_start = vim.uv.hrtime()
 
 do
   -- [[ Intro to `vim.pack` ]]
@@ -338,7 +341,9 @@ do
       local stderr = result.stderr or ''
       local stdout = result.stdout or ''
       local output = stderr ~= '' and stderr or stdout
-      if output == '' then output = 'No output from build command.' end
+      if output == '' then
+        output = 'No output from build command.'
+      end
       vim.notify(('Build failed for %s:\n%s'):format(name, output), vim.log.levels.ERROR)
     end
   end
@@ -351,7 +356,9 @@ do
     callback = function(ev)
       local name = ev.data.spec.name
       local kind = ev.data.kind
-      if kind ~= 'install' and kind ~= 'update' then return end
+      if kind ~= 'install' and kind ~= 'update' then
+        return
+      end
 
       if name == 'telescope-fzf-native.nvim' and vim.fn.executable 'make' == 1 then
         run_build(name, { 'make' }, ev.data.path)
@@ -359,12 +366,16 @@ do
       end
 
       if name == 'LuaSnip' then
-        if vim.fn.has 'win32' ~= 1 and vim.fn.executable 'make' == 1 then run_build(name, { 'make', 'install_jsregexp' }, ev.data.path) end
+        if vim.fn.has 'win32' ~= 1 and vim.fn.executable 'make' == 1 then
+          run_build(name, { 'make', 'install_jsregexp' }, ev.data.path)
+        end
         return
       end
 
       if name == 'nvim-treesitter' then
-        if not ev.data.active then vim.cmd.packadd 'nvim-treesitter' end
+        if not ev.data.active then
+          vim.cmd.packadd 'nvim-treesitter'
+        end
         vim.cmd 'TSUpdate'
         return
       end
@@ -376,11 +387,13 @@ end
 --- function to have less repetition in the following sections.
 ---@param repo string
 ---@return string
-local function gh(repo) return 'https://github.com/' .. repo end
+local function gh(repo)
+  return 'https://github.com/' .. repo
+end
 
 -- ============================================================
 -- SECTION 4: UI / CORE UX PLUGINS
--- sleuth, comment, gitsigns, which-key, colorscheme, todo-comments, git-blame, lualine, mini, alpha, bufferline, autopairs, dressing, persistence
+-- sleuth, comment, gitsigns, which-key, colorscheme, todo-comments, git-blame, lualine, mini, bufferline, autopairs, dressing, persistence
 -- ============================================================
 do
   vim.pack.add { { src = gh 'catppuccin/nvim', name = 'catppuccin' } }
@@ -515,57 +528,6 @@ do
     date_format = '%r',
   }
 
-  vim.pack.add { gh 'nvim-lualine/lualine.nvim' }
-  local git_blame = require 'gitblame'
-
-  require('lualine').setup {
-    theme = 'catppuccin',
-    extensions = { 'neo-tree' },
-    options = {
-      icons_enabled = true,
-      theme = 'auto',
-      component_separators = { left = '|', right = '|' },
-      section_separators = { left = '', right = '' },
-      -- section_separators = { left = '', right = '' },
-      disabled_filetypes = {
-        statusline = {
-          'alpha',
-          'neo-tree',
-        },
-        winbar = {},
-      },
-      ignore_focus = {},
-      always_divide_middle = true,
-      globalstatus = false,
-    },
-    sections = {
-      lualine_a = { 'mode' },
-      lualine_b = {
-        'branch',
-      },
-      lualine_c = {
-        'diagnostics',
-        {
-          'filename',
-          path = 1, -- Relative path
-        },
-      },
-      lualine_x = {
-        {
-          git_blame.get_current_blame_text,
-          cond = git_blame.is_blame_text_available,
-        },
-        'filetype',
-        'progress',
-        'location',
-      },
-      lualine_y = {},
-      lualine_z = {},
-      -- lualine_y = { 'filetype' },
-      -- lualine_z = { 'progress', 'location' },
-    },
-  }
-
   vim.pack.add { gh 'nvim-mini/mini.nvim' }
   -- Better Around/Inside textobjects
   --
@@ -588,84 +550,6 @@ do
   -- - sd'   - [S]urround [D]elete [']quotes
   -- - sr)'  - [S]urround [R]eplace [)] [']
   require('mini.surround').setup()
-
-  -- Simple and easy statusline.
-  --  You could remove this setup call if you don't like it,
-  --  and try some other statusline plugin
-  -- local statusline = require 'mini.statusline'
-  -- set use_icons to true if you have a Nerd Font
-  -- statusline.setup { use_icons = vim.g.have_nerd_font }
-
-  -- You can configure sections in the statusline by overriding their
-  -- default behavior. For example, here we set the section for
-  -- cursor location to LINE:COLUMN
-  ---@diagnostic disable-next-line: duplicate-set-field
-  -- statusline.section_location = function()
-  --   return '%2l:%-2v'
-  -- end
-
-  -- ... and there is more!
-  --  Check out: https://github.com/nvim-mini/mini.nvim
-
-  vim.pack.add { gh 'goolord/alpha-nvim' }
-  local alpha = require 'alpha'
-  local dashboard = require 'alpha.themes.dashboard'
-
-  --       local logo = [[
-  --  ▄▄    ▄ ▄▄▄▄▄▄▄ ▄▄▄▄▄▄▄ ▄▄   ▄▄ ▄▄▄ ▄▄   ▄▄
-  -- █  █  █ █       █       █  █ █  █   █  █▄█  █
-  -- █   █▄█ █    ▄▄▄█   ▄   █  █▄█  █   █       █
-  -- █       █   █▄▄▄█  █ █  █       █   █       █
-  -- █  ▄    █    ▄▄▄█  █▄█  █       █   █       █
-  -- █ █ █   █   █▄▄▄█       ██     ██   █ ██▄██ █
-  -- █▄█  █▄▄█▄▄▄▄▄▄▄█▄▄▄▄▄▄▄█ █▄▄▄█ █▄▄▄█▄█   █▄█
-  --             ]]
-
-  -- dashboard.section.header.val = vim.split(logo, '\n')
-
-  dashboard.section.buttons.val = {
-    dashboard.button('e', '  New file', ':ene <BAR> startinsert <CR>'),
-    dashboard.button('f', '󰈞  Search files', ':Telescope find_files<CR>'),
-    dashboard.button('.', '  Search recent files', ':Telescope oldfiles<CR>'),
-    dashboard.button('r', '  Restore Session', '<Cmd>lua require("persistence").load()<CR>'),
-    dashboard.button('u', '󰒲  Update plugins', '<Cmd>lua vim.pack.update()<CR>'),
-    dashboard.button('m', '󱌣  Mason', ':Mason<CR>'),
-    -- dashboard.button('s', '  Settings', ':e $MYVIMRC | :cd %:p:h | split . | wincmd k | pwd<CR>'),
-    dashboard.button('q', '󰅚  Quit NVIM', ':qa<CR>'),
-  }
-
-  local version = {
-    type = 'text',
-    val = 'NVIM ' .. tostring(vim.version()) .. ', ' .. _VERSION,
-    opts = {
-      position = 'center',
-    },
-  }
-
-  dashboard.opts.layout = {
-    { type = 'padding', val = 2 },
-    dashboard.section.header,
-    { type = 'padding', val = 1 },
-    version,
-    { type = 'padding', val = 2 },
-    dashboard.section.buttons,
-    { type = 'padding', val = 1 },
-    dashboard.section.footer,
-  }
-
-  alpha.setup(dashboard.opts)
-
-  -- Show plugin count and load time in footer
-  vim.api.nvim_create_autocmd('VimEnter', {
-    callback = function()
-      local ms = math.floor((vim.uv.hrtime() - pack_start) / 1e4 + 0.5) / 100
-      dashboard.section.footer.val = '󱐋 ' .. #vim.pack.get() .. ' plugins loaded in ' .. ms .. 'ms'
-      pcall(vim.cmd.AlphaRedraw)
-    end,
-  })
-  vim.cmd [[
-    autocmd FileType alpha setlocal nofoldenable
-  ]]
 
   vim.pack.add {
     gh 'nvim-tree/nvim-web-devicons',
@@ -745,7 +629,9 @@ do
     gh 'nvim-telescope/telescope-ui-select.nvim',
     gh 'nvim-tree/nvim-web-devicons',
   }
-  if vim.fn.executable 'make' == 1 then table.insert(telescope_plugins, gh 'nvim-telescope/telescope-fzf-native.nvim') end
+  if vim.fn.executable 'make' == 1 then
+    table.insert(telescope_plugins, gh 'nvim-telescope/telescope-fzf-native.nvim')
+  end
 
   -- NOTE: You can install multiple plugins at once
   vim.pack.add(telescope_plugins)
@@ -1010,7 +896,9 @@ do
       --
       -- This may be unwanted, since they displace some of your code
       if client and client:supports_method('textDocument/inlayHint', event.buf) then
-        map('<leader>th', function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf }) end, '[T]oggle Inlay [H]ints')
+        map('<leader>th', function()
+          vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
+        end, '[T]oggle Inlay [H]ints')
       end
     end,
   })
@@ -1047,7 +935,9 @@ do
 
         if client.workspace_folders then
           local path = client.workspace_folders[1].name
-          if path ~= vim.fn.stdpath 'config' and (vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc')) then return end
+          if path ~= vim.fn.stdpath 'config' and (vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc')) then
+            return
+          end
         end
 
         local current_settings = client.config.settings --[[@as lspconfig.settings.lua_ls]]
@@ -1154,7 +1044,9 @@ do
     },
   }
 
-  vim.keymap.set({ 'n', 'v' }, '<leader>f', function() require('conform').format { async = true } end, { desc = '[F]ormat buffer' })
+  vim.keymap.set({ 'n', 'v' }, '<leader>f', function()
+    require('conform').format { async = true }
+  end, { desc = '[F]ormat buffer' })
 end
 
 -- ============================================================
@@ -1232,10 +1124,14 @@ do
   ---@param language string
   local function treesitter_try_attach(buf, language)
     -- Check if the buffer is valid (might not be after install completes)
-    if not vim.api.nvim_buf_is_valid(buf) then return end
+    if not vim.api.nvim_buf_is_valid(buf) then
+      return
+    end
 
     -- Check if a parser exists and load it
-    if not vim.treesitter.language.add(language) then return end
+    if not vim.treesitter.language.add(language) then
+      return
+    end
 
     -- Enable syntax highlighting and other treesitter features
     vim.treesitter.start(buf, language)
@@ -1250,7 +1146,9 @@ do
     local has_indent_query = vim.treesitter.query.get(language, 'indents') ~= nil
 
     -- Enable treesitter based indentation (ruby's treesitter indent is unreliable, so skip it)
-    if has_indent_query and language ~= 'ruby' then vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()" end
+    if has_indent_query and language ~= 'ruby' then
+      vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+    end
   end
 
   local available_parsers = require('nvim-treesitter').get_available()
@@ -1260,7 +1158,9 @@ do
       local buf, filetype = args.buf, args.match
 
       local language = vim.treesitter.language.get_lang(filetype)
-      if not language then return end
+      if not language then
+        return
+      end
 
       local installed_parsers = require('nvim-treesitter').get_installed 'parsers'
 
@@ -1269,7 +1169,9 @@ do
         treesitter_try_attach(buf, language)
       elseif vim.tbl_contains(available_parsers, language) then
         -- If a parser is available in `nvim-treesitter`, auto-install it and enable it after the installation is done
-        require('nvim-treesitter').install(language):await(function() treesitter_try_attach(buf, language) end)
+        require('nvim-treesitter').install(language):await(function()
+          treesitter_try_attach(buf, language)
+        end)
       else
         -- Try to enable treesitter features in case the parser exists but is not available from `nvim-treesitter`
         treesitter_try_attach(buf, language)
@@ -1285,15 +1187,42 @@ do
 end
 
 -- ============================================================
--- SECTION 10: OPTIONAL EXTRAS
--- nvim-lint (kickstart.plugins.lint)
+-- SECTION 10: OPTIONAL EXAMPLES / NEXT STEPS
+-- kickstart.plugins.* examples
 -- ============================================================
 do
-  -- Linting. See `lua/kickstart/plugins/lint.lua`
-  vim.pack.add { gh 'mfussenegger/nvim-lint' }
-  require('kickstart.plugins.lint')()
-end
+  -- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
+  -- init.lua. If you want these files, they are in the repository, so you can just download them and
+  -- place them in the correct locations.
 
+  -- NOTE: Next step on your Neovim journey: Add/Configure additional plugins for Kickstart
+  --
+  --  Here are some example plugins that I've included in the Kickstart repository.
+  --  Uncomment any of the lines below to enable them (you will need to restart nvim).
+  --
+  -- require 'kickstart.plugins.debug'
+  -- require 'kickstart.plugins.indent_line'
+  -- require 'kickstart.plugins.lint'
+  -- require 'kickstart.plugins.autopairs'
+  -- require 'kickstart.plugins.neo-tree'
+
+  -- NOTE: You can add your own plugins, configuration, etc. in `lua/custom/plugins/*.lua`.
+  --
+  -- For independent modules, uncomment the convenience loader:
+  -- require 'custom.plugins'
+  --
+  -- `custom.plugins` automatically loads files from that directory, but their
+  -- order is unspecified. If plugins depend on each other, keep them in the same
+  -- file and put their `vim.pack.add()` and `setup()` calls in the required order.
+  --
+  -- If separate modules need a specific order, require them explicitly instead:
+  -- require 'custom.plugins.colorscheme'
+  -- require 'custom.plugins.ui'
+  -- require 'custom.plugins.git'
+
+  require 'kickstart.plugins.lint'
+  require 'custom.plugins.statusline' -- lualine; needs gitblame set up above
+end
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
