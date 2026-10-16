@@ -393,7 +393,7 @@ end
 
 -- ============================================================
 -- SECTION 4: UI / CORE UX PLUGINS
--- sleuth, comment, gitsigns, which-key, colorscheme, todo-comments, git-blame, lualine, mini, bufferline, autopairs, dressing, persistence
+-- sleuth, comment, gitsigns, which-key, colorscheme, todo-comments, mini, bufferline, autopairs, dressing, persistence
 -- ============================================================
 do
   vim.pack.add { { src = gh 'catppuccin/nvim', name = 'catppuccin' } }
@@ -512,21 +512,6 @@ do
 
   vim.pack.add { gh 'folke/todo-comments.nvim' }
   require('todo-comments').setup { signs = false }
-
-  vim.pack.add { gh 'f-person/git-blame.nvim' }
-  local map = function(lhs, rhs, desc)
-    vim.api.nvim_set_keymap('n', lhs, rhs, { noremap = true, silent = true, desc = desc })
-  end
-
-  map('<leader>hoc', '<Cmd>GitBlameOpenCommitURL<CR>', 'git blame [o]pen [c]ommit URL for line')
-  map('<leader>hof', '<Cmd>GitBlameOpenFileURL<CR>', 'git blame [o]pen [f]ile URL for line')
-
-  require('gitblame').setup {
-    -- enabled = false,
-    display_virtual_text = false,
-    message_template = ' <author>, <date>',
-    date_format = '%r',
-  }
 
   vim.pack.add { gh 'nvim-mini/mini.nvim' }
   -- Better Around/Inside textobjects
@@ -1221,7 +1206,8 @@ do
   -- require 'custom.plugins.git'
 
   require 'kickstart.plugins.lint'
-  require 'custom.plugins.statusline' -- lualine; needs gitblame set up above
+  require 'custom.plugins.gitblame'
+  require 'custom.plugins.statusline' -- lualine; needs gitblame set up first
 end
 
 -- The line beneath this is called `modeline`. See `:help modeline`
