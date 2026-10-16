@@ -11,7 +11,6 @@ require('lualine').setup {
     theme = 'auto',
     component_separators = { left = '|', right = '|' },
     section_separators = { left = '', right = '' },
-    -- section_separators = { left = '', right = '' },
     disabled_filetypes = {
       statusline = {
         'neo-tree',
@@ -44,7 +43,5 @@ require('lualine').setup {
     },
     lualine_y = {},
     lualine_z = {},
-    -- lualine_y = { 'filetype' },
-    -- lualine_z = { 'progress', 'location' },
   },
 }
