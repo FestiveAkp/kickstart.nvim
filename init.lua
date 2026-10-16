@@ -393,7 +393,7 @@ end
 
 -- ============================================================
 -- SECTION 4: UI / CORE UX PLUGINS
--- sleuth, comment, gitsigns, which-key, colorscheme, todo-comments, mini, bufferline, autopairs, dressing, persistence
+-- sleuth, comment, gitsigns, which-key, colorscheme, todo-comments, mini, bufferline, dressing, persistence
 -- ============================================================
 do
   vim.pack.add { { src = gh 'catppuccin/nvim', name = 'catppuccin' } }
@@ -581,10 +581,6 @@ do
   -- map('b8', '<Cmd>BufferLineGoToBuffer 8<CR>', 'Jump to buffer 8')
   -- map('b9', '<Cmd>BufferLineGoToBuffer 9<CR>', 'Jump to buffer 9')
   -- map('b0', '<Cmd>BufferLineGoToBuffer -1<CR>', 'Jump to last buffer')
-
-  vim.pack.add { gh 'windwp/nvim-autopairs' }
-  -- blink.cmp adds brackets on accept itself, so no completion integration is needed
-  require('nvim-autopairs').setup {}
 
   vim.pack.add { gh 'stevearc/dressing.nvim' }
   require('dressing').setup {
@@ -1188,7 +1184,7 @@ do
   -- require 'kickstart.plugins.debug'
   -- require 'kickstart.plugins.indent_line'
   -- require 'kickstart.plugins.lint'
-  -- require 'kickstart.plugins.autopairs'
+  require 'kickstart.plugins.autopairs'
   -- require 'kickstart.plugins.neo-tree'
 
   -- NOTE: You can add your own plugins, configuration, etc. in `lua/custom/plugins/*.lua`.
