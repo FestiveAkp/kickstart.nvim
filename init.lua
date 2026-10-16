@@ -516,7 +516,17 @@ do
   vim.pack.add { gh 'folke/todo-comments.nvim' }
   require('todo-comments').setup { signs = false }
 
+  -- [[ mini.nvim ]]
+  --  A collection of various small independent plugins/modules
   vim.pack.add { gh 'nvim-mini/mini.nvim' }
+
+  -- If a nerd font is available, load the icons module for pretty icons in various plugins.
+  if vim.g.have_nerd_font then
+    require('mini.icons').setup()
+    -- Used for backwards compatibility with plugins that require `nvim-web-devicons` (e.g. telescope.nvim)
+    MiniIcons.mock_nvim_web_devicons()
+  end
+
   -- Better Around/Inside textobjects
   --
   -- Examples:
@@ -540,7 +550,6 @@ do
   require('mini.surround').setup()
 
   vim.pack.add {
-    gh 'nvim-tree/nvim-web-devicons',
     { src = gh 'akinsho/bufferline.nvim', version = vim.version.range '*' },
   }
   require('bufferline').setup {
@@ -611,7 +620,6 @@ do
     gh 'nvim-lua/plenary.nvim',
     gh 'nvim-telescope/telescope.nvim',
     gh 'nvim-telescope/telescope-ui-select.nvim',
-    gh 'nvim-tree/nvim-web-devicons',
   }
   if vim.fn.executable 'make' == 1 then
     table.insert(telescope_plugins, gh 'nvim-telescope/telescope-fzf-native.nvim')
