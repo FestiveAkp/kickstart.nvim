@@ -183,6 +183,9 @@ do
   vim.o.confirm = true
 
   vim.o.tabstop = 4
+  -- 0 = follow tabstop, so treesitter's indentexpr yields one tab per level in tab-indented files
+  vim.o.shiftwidth = 0
+  vim.o.softtabstop = -1
   vim.o.wrap = false
 end
 
