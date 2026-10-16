@@ -603,7 +603,7 @@ end
 
 -- ============================================================
 -- SECTION 5: SEARCH & NAVIGATION
--- Telescope setup, keymaps, neo-tree file explorer
+-- Telescope setup, keymaps
 -- ============================================================
 do
   ---@type (string | vim.pack.Spec)[]
@@ -732,39 +732,6 @@ do
   vim.keymap.set('n', '<leader>sn', function()
     builtin.find_files { cwd = vim.fn.stdpath 'config', follow = true }
   end, { desc = '[S]earch [N]eovim files' })
-
-  vim.pack.add {
-    gh 'nvim-lua/plenary.nvim',
-    gh 'nvim-tree/nvim-web-devicons', -- not strictly required, but recommended
-    gh 'MunifTanjim/nui.nvim',
-    { src = gh 'nvim-neo-tree/neo-tree.nvim', version = 'v3.x' },
-  }
-  require('neo-tree').setup {
-    close_if_last_window = true,
-    filesystem = {
-      window = {
-        position = 'float',
-        mappings = {
-          ['\\'] = 'close_window',
-        },
-      },
-      filtered_items = {
-        visible = true,
-        hide_dotfiles = false,
-        hide_gitignored = false,
-        hide_hidden = false,
-        never_show = {
-          '.git',
-          '.DS_Store',
-        },
-      },
-      follow_current_file = {
-        enabled = true,
-      },
-    },
-  }
-
-  vim.keymap.set('n', '\\', ':Neotree reveal<CR>', { desc = 'Neo-tree reveal', silent = true })
 end
 
 -- ============================================================
@@ -1188,7 +1155,6 @@ do
   -- require 'kickstart.plugins.indent_line'
   -- require 'kickstart.plugins.lint'
   require 'kickstart.plugins.autopairs'
-  -- require 'kickstart.plugins.neo-tree'
 
   -- NOTE: You can add your own plugins, configuration, etc. in `lua/custom/plugins/*.lua`.
   --
@@ -1206,6 +1172,7 @@ do
 
   require 'kickstart.plugins.lint'
   require 'custom.plugins.gitblame'
+  require 'custom.plugins.neo-tree'
   require 'custom.plugins.statusline' -- lualine; needs gitblame set up first
 end
 
