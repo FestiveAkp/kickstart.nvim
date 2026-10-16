@@ -40,7 +40,6 @@ require('lualine').setup {
         cond = git_blame.is_blame_text_available,
       },
       'filetype',
-      'progress',
       'location',
     },
     lualine_y = {},
