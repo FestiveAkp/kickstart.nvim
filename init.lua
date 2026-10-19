@@ -643,12 +643,22 @@ do
     -- You can put your default mappings / updates / etc. in here
     --  All the info you're looking for is in `:help telescope.setup()`
     --
-    -- defaults = {
-    --   mappings = {
-    --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-    --   },
-    -- },
-    -- pickers = {}
+    defaults = {
+      -- Grey out the directory part of a path, leaving only the filename highlighted
+      path_display = function(_, path)
+        path = vim.fn.fnamemodify(path, ':.')
+        local tail = require('telescope.utils').path_tail(path)
+        local dir_len = #path - #tail
+        if dir_len == 0 then
+          return tail
+        end
+        return path, { { { 0, dir_len }, 'NonText' } }
+      end,
+      -- mappings = {
+      --   i = { ['<c-enter>'] = 'to_fuzzy_refine' },
+      -- },
+    },
+    pickers = { oldfiles = { cwd_only = true } },
     extensions = {
       ['ui-select'] = {
         require('telescope.themes').get_dropdown(),
