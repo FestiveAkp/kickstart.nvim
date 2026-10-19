@@ -396,7 +396,7 @@ end
 
 -- ============================================================
 -- SECTION 4: UI / CORE UX PLUGINS
--- sleuth, comment, gitsigns, which-key, colorscheme, todo-comments, mini, bufferline, dressing, persistence
+-- sleuth, comment, gitsigns, which-key, colorscheme, todo-comments, mini, bufferline, persistence
 -- ============================================================
 do
   vim.pack.add { { src = gh 'catppuccin/nvim', name = 'catppuccin' } }
@@ -594,20 +594,10 @@ do
   -- map('b9', '<Cmd>BufferLineGoToBuffer 9<CR>', 'Jump to buffer 9')
   -- map('b0', '<Cmd>BufferLineGoToBuffer -1<CR>', 'Jump to last buffer')
 
-  vim.pack.add { gh 'stevearc/dressing.nvim' }
-  require('dressing').setup {
-    input = {
-      title_pos = 'center',
-      win_options = {
-        winhighlight = 'FloatBorder:TelescopePromptBorder,FloatTitle:TelescopePromptTitle',
-      },
-    },
-  }
-
-  vim.pack.add { gh 'folke/persistence.nvim' }
-  require('persistence').setup {
-    -- add any custom options here
-  }
+  -- vim.pack.add { gh 'folke/persistence.nvim' }
+  -- require('persistence').setup {
+  --   -- add any custom options here
+  -- }
 end
 
 -- ============================================================
