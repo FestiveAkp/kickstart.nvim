@@ -883,6 +883,7 @@ do
     --
     -- But for many setups, the LSP (`ts_ls`) will work just fine
     ts_ls = {},
+    astro = {},
     -- eslint = {},
 
     stylua = {}, -- Used to format Lua code
@@ -997,6 +998,7 @@ do
       javascript = { 'prettierd' },
       typescript = { 'prettierd' },
       typescriptreact = { 'prettierd' },
+      astro = { 'prettierd' },
       json = { 'prettierd' },
       jsonc = { 'prettierd' },
       -- php = { 'pint' },
@@ -1076,7 +1078,7 @@ do
   vim.pack.add { { src = gh 'nvim-treesitter/nvim-treesitter', version = 'main' } }
   -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
   -- Ensure basic parsers are installed
-  local parsers = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' }
+  local parsers = { 'astro', 'bash', 'c', 'css', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'tsx', 'typescript', 'vim', 'vimdoc' }
   require('nvim-treesitter').install(parsers)
 
   ---@param buf integer
